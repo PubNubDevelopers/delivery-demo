@@ -1,2 +1,7 @@
-# delivery-dashboard-javascript-demo
-Dashboard for Package delivery, food delivery, ride-share and taxi demo 
+# Delivery Demo
+
+* Package Delivery
+* Delivery of Online Food Orders
+* Ride-Share / Private Taxi Ordering
+
+
