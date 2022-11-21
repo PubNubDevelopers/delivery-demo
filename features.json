@@ -1,0 +1,11 @@
+{
+    "features": [
+        "Request a Package Delivery",
+        "Order a Taxi",
+        "Order some Food",
+        "Click on a Delivery Driver",
+        "Send the Driver a Message",
+        "Wait until the Driver Arrives",
+        "View the Delivery on Mobile"
+    ]
+}

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,
+		initial-scale=1, shrink-to-fit=no" />
+
+    <!--  Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+    <!-- Bootstrap and FontAwesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+    <script defer src="./js/fontawesome/all.min.js"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+
+    <!-- PubNub SDK -->
+    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.2.1.min.js"></script>
+
+    <!-- Application logic -->
+    <script src="./js/keys.js"></script>
+    <script src="./js/theme.js"></script>
+    <script src="./js/pubnub_setup.js"></script>
+
+    <!-- Interactive Demo Framework -->
+    <script type="text/javascript"
+        src="https://darryncampbell-pubnub.github.io/pubnub-demo-utils/js/interactive-demo-interface/v2/demo-interface.js"></script>
+
+</head>
+
+<!-- Interactive demo hosts this content in a window 824 pixels wide -->
+
+<body id="body" onload="onload();">
+
+
+
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+
+        <!-- Shown if no PubNub keys found in setup.js -->
+        <div class="container alert alert-danger alert-dismissible fade show" style="display:none" id="noKeysAlert"
+            role="alert">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <strong>Cannot find PubNub keys.</strong> Please specify your PubNub keys in keys.js.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!--  Main app body -->
+        <div class="container-fluid px-2">
+            <div class="row gy-2 px-0">
+                <div class="col">
+                    <div id="map-canvas" class="mapcanvas">.</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 col-md-5 gy-2 px-2">
+                    <div class="px-0">
+                        <div class="card text-dark mb-1 delivery-info-pane" style="width:100%;">
+                            <div class="card-header text-center" id="selected-name">Delivery Information</div>
+                            <ul class="list-group list-group-flush" id="deliveryInformationUL">
+                                <li class="list-group-item" id="liManualAddress">
+                                    <div class="form-group">
+                                        <label for="txtManualAddress">Delivery Address</label>
+                                        <textarea class="form-control" id="txtManualAddress" rows=""></textarea>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="chkFindMyLocation"
+                                            onchange="handleChkFindMyLocation();">
+                                        <label class="form-check-label" for="chkFindMyLocation">Find My Location</label>
+                                        <span class="location-span" id="spanDetectedLocation">Not Requested</span>
+                                    </div>
+
+                                </li>
+                            </ul>
+                        </div>
+
+
+                        <div class="card text-dark mb-1" style="width:100%;">
+                            <div class="card-header text-center" id="selected-name">Vehicle En-Route</div>
+                            <ul class="list-group list-group-flush" id="vehicleInformationUL">
+                                <li class="list-group-item" id="vehicleInfo-selectFromMap">
+                                    Please Select a vehicle from the map
+                                </li>
+                                <li class="list-group-item" id="vehicleInfo-details" style="display:none">
+                                </li>
+                                <li class="list-group-item" id="vehicleInfo-messageDriver" style="display:none">
+                                    <label for="txtMessageDriver">Send Driver a message:</label>
+                                    <input type="text" class="form-control" id="txtMessageDriver"
+                                        maxlength="140"></input>
+                                </li>
+                                <li class="list-group-item" id="vehicleInfo-eta" style="display:none">
+                                    ETA:
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col gy-2 ps-0 order-pane">
+                    <div class="px-0">
+
+                        <!--  Tabs to choose what you want delivered -->
+                        <!--  https://getbootstrap.com/docs/5.2/components/navs-tabs/ -->
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="package-delivery-tab" data-bs-toggle="tab"
+                                    data-bs-target="#package-delivery-tab-pane" type="button" role="tab"
+                                    aria-controls="package-delivery-tab-pane" aria-selected="true">Package
+                                    Delivery</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="taxi-tab" data-bs-toggle="tab"
+                                    data-bs-target="#taxi-tab-pane" type="button" role="tab"
+                                    aria-controls="taxi-tab-pane" aria-selected="false">Taxi / Rideshare</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="food-delivery-tab" data-bs-toggle="tab"
+                                    data-bs-target="#food-delivery-tab-pane" type="button" role="tab"
+                                    aria-controls="food-delivery-tab-pane" aria-selected="false">Food Delivery</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="package-delivery-tab-pane" role="tabpanel"
+                                aria-labelledby="package-delivery-tab" tabindex="0">
+                                <H3 class="tab-header">You Have 3 orders pending delivery</H3>
+                                <H2><i class="fa-solid fa-truck-fast" style="float:right"></i></H2>
+                                <div>Please select packages to deliver:</div>
+                                <H4 style="margin-top:10px">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="chkPackage1" checked>
+                                        <label class="form-check-label" for="chkPackage1"> Order# 96841: Socks and a
+                                            Hat</label>
+                                    </div>
+                                </H4>
+                                <H4 style="margin-top:10px">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="chkPackage2">
+                                        <label class="form-check-label" for="chkPackage2"> Order# 96842:
+                                            Kitchenware</label>
+                                    </div>
+                                </H4>
+                                <H4 style="margin-top:10px">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="chkPackage3">
+                                        <label class="form-check-label" for="chkPackage3"> Order# 96843: Cuddly
+                                            Toy</label>
+                                    </div>
+                                </H4>
+                                <button type="button" class="btn btn-pn" style="margin-top:10px;width:100%"
+                                    id="btnSummonPackageDelivery"
+                                    onclick="summonVehicle(THEME_PACKAGE_DELIVERY)">Deliver These
+                                    Packages</button>
+                            </div>
+                            <div class="tab-pane fade" id="taxi-tab-pane" role="tabpanel" aria-labelledby="taxi-tab"
+                                tabindex="0">
+                                <H3 class="tab-header">What vehicle would you like?</H3>
+                                <H2><i class="fa-solid fa-car-side" style="float:right"></i></H2>
+                                <div>Friendly drivers, fast service:</div>
+                                <div class="btn-group" role="group">
+                                    <div class="form-check" style="margin-left: 10px">
+                                        <H4 style="margin-top:10px">
+                                            <input type="radio" class="form-check-input" name="chkTaxi" id="chkTaxi1"
+                                                checked>
+                                            <label class="form-check-label" for="chkTaxi1" id="lblTaxi1">4-Seater
+                                                Car</label>
+
+                                        </H4>
+                                        <H4 style="margin-top:10px">
+                                            <input type="radio" class="form-check-input" name="chkTaxi" id="chkTaxi2">
+                                            <label class="form-check-label" for="chkTaxi2" id="lblTaxi2">6-Seater
+                                                Minivan</label>
+
+                                        </H4>
+                                        <H4 style="margin-top:10px">
+                                            <input type="radio" class="form-check-input" name="chkTaxi" id="chkTaxi3">
+                                            <label class="form-check-label" for="chkTaxi3" id="lblTaxi3">12-Seater
+                                                Minibus</label>
+
+                                        </H4>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-pn" style="margin-top:10px;width:100%"
+                                    id="btnSummonTaxi" onclick="summonVehicle(THEME_TAXI)">Order Taxi</button>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="food-delivery-tab-pane" role="tabpanel"
+                            aria-labelledby="food-delivery-tab" tabindex="0">
+
+                            <H3 class="tab-header">What would you like to eat?</H3>
+                            <H2><i class="fa-solid fa-pizza-slice" style="float:right"></i></H2>
+                            <div>Hungry? Thirsty? We can help with that.</div>
+                            <H4 style="margin-top:10px">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="chkFood1">
+                                    <label class="form-check-label" for="chkFood1" id="lblFood1">Italian: Pizza</label>
+                                </div>
+                            </H4>
+                            <H4 style="margin-top:10px">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="chkFood2">
+                                    <label class="form-check-label" for="chkFood2" id="lblFood2">Sushi</label>
+                                </div>
+                            </H4>
+                            <H4 style="margin-top:10px">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="chkFood3">
+                                    <label class="form-check-label" for="chkFood3" id="lblFood3">Cup of Coffee</label>
+                                </div>
+                            </H4>
+                            <button type="button" class="btn btn-pn" style="margin-top:10px;width:100%"
+                                id="btnSummonFoodDelivery" onclick="summonVehicle(THEME_FOOD_DELIVERY)">Order
+                                Food</button>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: Error -->
+        <div class="modal" id="errorModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content p-2">
+                    <div class="modal-header alert alert-danger">
+                        <h5 class="modal-title" id="errorModalTitle">Problem</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3" id="errorModalMessage"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+
+
+    <!-- Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+
+    <!-- Application logic -->
+    <script src="./js/pubnub_handler.js"></script>
+    <script src="./js/map.js"></script>
+    <script src="./js/deliveryInfo_helper.js"></script>
+    <script src="./js/vehicleInfo_helper.js"></script>
+    <!-- Mocked Server logic -->
+    <script src="./server/mockedServer.js"></script>
+    <script>
+        //  Map
+        var jsElem = window.document.createElement('script');
+        jsElem.src = "https://maps.googleapis.com/maps/api/js?key=" + GOOGLE_KEY + "&callback=initialize";
+        jsElem.type = 'text/javascript';
+        document.getElementById('body').append(jsElem);
+
+    </script>
+
+
+</body>
+
+</html>
