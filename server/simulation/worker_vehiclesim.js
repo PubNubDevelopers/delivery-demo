@@ -103,7 +103,7 @@ if ('function' === typeof importScripts) {
       //  Absolutely no attempt to create a sensible registration (license) plate based on the user's region(!)
       for (var i = 0; i < 7; i++) {
         randomRegistration += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.charAt(
-          Math.floor(Math.random() * 7)
+          Math.floor(Math.random() * 36)
         )
       }
       //  All names and profile images are open source in this simulation
