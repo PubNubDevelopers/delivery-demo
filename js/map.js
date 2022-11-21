@@ -155,7 +155,7 @@ function hideUserLocationMarker()
 }
 
 function zoomOnPosition (position) {
-  map.setZoom(12)
+  map.setZoom(11)
   map.setCenter(position)
 }
 
