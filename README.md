@@ -12,7 +12,7 @@ For information on existing customers and deployments see our [Industry pages fo
 
 > This application shows how PubNub can request a delivery or taxi and then provide updates on the delivery / rideshare vehicle's location in real-time.  The vehicle's location and any messages received can be seen simultaneously on multiple devices, powered by PubNub.
 
-
+![Screenshot](https://raw.githubusercontent.com/PubNubDevelopers/delivery-demo/main/media/screenshot.png)
 
 ## Demo
 
