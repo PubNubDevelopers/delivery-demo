@@ -65,6 +65,7 @@ async function summonVehicle (theme) {
   var deliveryLocation = null
   if (userLocation != null) {
     //  Using physical lat / long of the user for delivery location
+    successfullySummonedVehicle(theme)  //  Only used for the interactive demo
     server_summonVehicle(userLocation, theme, themeSpecificData)
   } else if (
     userLocation === null &&
