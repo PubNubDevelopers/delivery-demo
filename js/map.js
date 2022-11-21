@@ -50,7 +50,7 @@ function drawMapRoute (vehicleId) {
 }
 
 //  Logic called when a route is first created (i.e. when a PN message is received from a vehicle telling us a new route is happening).  Create an item in the global vehicles variable.
-function initializeDeliveryRoute (vehicleId, route, theme, themeSpecificData) {
+function initializeDeliveryRoute (vehicleId, route, theme, themeSpecificData, originalChannel) {
   var icon = {
     path: theme_driverIcons[theme],
     fillColor: theme_driverIconColours[theme],
@@ -100,7 +100,9 @@ function initializeDeliveryRoute (vehicleId, route, theme, themeSpecificData) {
 
   //  Draw the Route on the map including end marker
   drawMapRoute(vehicleId)
-  zoomOnPosition(vehicles[vehicleId].destinationMarker.getPosition())
+  //  Only zoom in on the vehicle if we created it ourselves
+  if (channelName == originalChannel)
+    zoomOnPosition(vehicles[vehicleId].destinationMarker.getPosition())
 }
 
 //  Moves the vehicle marker whenever a location update is received
@@ -162,7 +164,7 @@ function zoomOnPosition (position) {
 function showInfoWindow(vehicleId, message)
 {
   var infoMessage = "<img src='./pn_small.png'> <b>Message delivered via PubNub</b> <br/><br/>"
-  infoMessage += message;
+  infoMessage += moderate(message);
   if (vehicles[vehicleId].infoWindow != null)
     vehicles[vehicleId].infoWindow.close();
 

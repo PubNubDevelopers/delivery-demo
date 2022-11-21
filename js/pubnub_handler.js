@@ -70,7 +70,8 @@ async function onload () {
             payload.publisher,
             payload.message.route,
             payload.message.theme,
-            payload.message.themeSpecificData
+            payload.message.themeSpecificData,
+            payload.channel
           )
           locationUpdateReceived(
             payload.publisher,
@@ -105,7 +106,8 @@ async function onload () {
               potentialInFlightDeliveries[inFlight].id,
               potentialInFlightDeliveries[inFlight].route,
               potentialInFlightDeliveries[inFlight].theme,
-              potentialInFlightDeliveries[inFlight].themeSpecificData
+              potentialInFlightDeliveries[inFlight].themeSpecificData,
+              potentialInFlightDeliveries[inFlight].originalChannel
             )
             potentialInFlightDeliveries.splice(inFlight, 1)
           }
@@ -147,7 +149,8 @@ function processHistoricalMessages (history) {
           id: history.channels[channelName][i].uuid,
           route: history.channels[channelName][i].message.route,
           theme: history.channels[channelName][i].message.theme,
-          themeSpecificData: history.channels[channelName][i].message.themeSpecificData
+          themeSpecificData: history.channels[channelName][i].message.themeSpecificData,
+          originalChannel: history.channels[channelName][i].channel
         })
       } else if (
         history.channels[channelName][i].message.state == 'END_ROUTE'
@@ -162,7 +165,8 @@ function processHistoricalMessages (history) {
         id: started[i].id,
         route: started[i].route,
         theme: started[i].theme,
-        themeSpecificData: started[i].themeSpecificData
+        themeSpecificData: started[i].themeSpecificData,
+        originalChannel: started[i].originalChannel
       })
       //  bit of a hack to keep track of what we have started
       stopped.push(started[i].id)
