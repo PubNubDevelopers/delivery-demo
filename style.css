@@ -8,21 +8,11 @@ body {
 }
 
 .order-pane {
-    display: none;
+    display: block;
 }
 
 .delivery-info-pane {
-    display: none;
-}
-
-@media (min-width: 768px) {
-    .order-pane {
-        display: block;
-    }
-
-    .delivery-info-pane {
-        display: block;
-    }
+    display: block;
 }
 
 .mapcanvas {

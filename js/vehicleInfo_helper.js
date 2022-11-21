@@ -135,8 +135,14 @@ function moderate(input)
   var output = input;
   for (var i = 0; i < naughtyWords.length; i++)
   {
-    output = output.replaceAll(naughtyWords[i], "***");
+    output = output.replaceAllIgnoreCase(naughtyWords[i], "***");
   }
   return output;
 }
 
+String.prototype.replaceAllIgnoreCase = function(strReplace, strWith) {
+  // See http://stackoverflow.com/a/3561711/556609
+  var esc = strReplace.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  var reg = new RegExp(esc, 'ig');
+  return this.replace(reg, strWith);
+};
