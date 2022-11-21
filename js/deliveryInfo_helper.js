@@ -30,7 +30,6 @@ async function summonVehicle (theme) {
       return
     }
     themeSpecificData.numOrders = countOrders
-    actionCompleted({ action: 'Request a Package Delivery', debug: false }) //  Only used for interactive demo
   } else if (theme === THEME_TAXI) {
     var taxi1 = document.getElementById('chkTaxi1').checked
     var taxi2 = document.getElementById('chkTaxi2').checked
@@ -39,7 +38,6 @@ async function summonVehicle (theme) {
     if (taxi2) vehicleType = document.getElementById('lblTaxi2').innerHTML
     if (taxi3) vehicleType = document.getElementById('lblTaxi3').innerHTML
     themeSpecificData.vehicleType = vehicleType
-    actionCompleted({ action: 'Order a Taxi', debug: false }) //  Only used for interactive demo
   } else if (theme === THEME_FOOD_DELIVERY) {
     var food1 = document.getElementById('chkFood1').checked
     var food2 = document.getElementById('chkFood2').checked
@@ -61,7 +59,6 @@ async function summonVehicle (theme) {
       displayError('Please select at least one type of food to deliver')
       return
     }
-    actionCompleted({ action: 'Order some Food', debug: false }) //  Only used for interactive demo
   }
 
   //  Determine where the package is being delivered to.  Either the user's physical location or whichever address they have typed into the manual address field.
@@ -91,11 +88,23 @@ async function summonVehicle (theme) {
         'Unable to resolve delivery address, please try a different address'
       )
     } else {
+      successfullySummonedVehicle(theme)  //  Only used for the interactive demo
       server_summonVehicle(deliveryLocation, theme, themeSpecificData)
     }
   } else {
     //  Unrecognised location
     displayError('Please wait until your location has been determined')
+  }
+}
+
+//  Only used for the interactive demo
+function successfullySummonedVehicle (theme) {
+  if (theme === THEME_PACKAGE_DELIVERY) {
+    actionCompleted({ action: 'Request a Package Delivery', debug: false }) //  Only used for interactive demo
+  } else if (theme === THEME_TAXI) {
+    actionCompleted({ action: 'Order a Taxi', debug: false }) //  Only used for interactive demo
+  } else if (theme === THEME_FOOD_DELIVERY) {
+    actionCompleted({ action: 'Order some Food', debug: false }) //  Only used for interactive demo
   }
 }
 
