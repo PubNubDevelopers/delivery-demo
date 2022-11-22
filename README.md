@@ -16,7 +16,7 @@ For information on existing customers and deployments see our [Industry pages fo
 
 ## Demo
 
-[//]: # (A hosted version of this demo can be found at https://www.pubnub.com/demos/delivery/ )
+A hosted version of this demo can be found at https://www.pubnub.com/demos/delivery/
 
 ## Features
 

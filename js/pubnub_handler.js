@@ -132,6 +132,12 @@ async function onload () {
       // The viewport is less than 768 pixels wide
       actionCompleted({ action: 'View the Delivery on Mobile', debug: false }) //  Only used for interactive demo
     }
+
+    var helpModal = new bootstrap.Modal(
+      document.getElementById('helpModal'),
+      {}
+    )
+    helpModal.show()
   }
 }
 
