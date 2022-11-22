@@ -7,6 +7,11 @@ body {
     border-radius: 50%;
 }
 
+.modal-body {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
 .order-pane {
     display: block;
 }
