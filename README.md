@@ -27,7 +27,7 @@ A hosted version of this demo can be found at https://www.pubnub.com/demos/deliv
 
 ## Installing / Getting started
 
-This application is self-contained and can be run entirely from the files contained in this repository (without the need to set up a corresponding server or serverless functions).  **Because the app uses WebWorkers you cannot run it directly from the filesystem, instaed use a local server such as [XAMPP](https://www.apachefriends.org/) or [Python](https://docs.python.org/3/library/http.server.html)**.
+This application is self-contained and can be run entirely from the files contained in this repository (without the need to set up a corresponding server or serverless functions).  **Because the app uses WebWorkers you cannot run it directly from the filesystem, instead use a local server such as [XAMPP](https://www.apachefriends.org/) or [Python](https://docs.python.org/3/library/http.server.html)**.
 
 To run this project yourself you will need a PubNub account and a Google Maps API key.
 
