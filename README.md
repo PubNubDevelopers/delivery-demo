@@ -118,7 +118,7 @@ Everytime the vehicle moves a PubNub `signal()` is sent, this is limited to 64 b
 
 ### Channel Naming conventions
 
-All communication between the vehicle and the dashboard is on a channel whose name is derived from the URL query string - this allows the same application being launched in another window to retrieve a delivery currently in-progress.  This requires the PubNub persistence feature since details of the route are only sent at the start of the delivery and PubNub signals are not persisted.
+All communication between the vehicle and the dashboard is on a channel whose name is derived from the URL query string - this allows the same application being launched in another window to retrieve a delivery currently in-progress.  This requires the Message persistence feature since details of the route are only sent at the start of the delivery and PubNub signals are not persisted.
 
 The dashboard will listen for all messages sent to `vehicles.*`, using PubNub's Stream Controller.  This will receive all vehicle updates, including those sent by other users.  Vehicles requested by **other users** will only be shown if requested after your page is loaded. 
 
