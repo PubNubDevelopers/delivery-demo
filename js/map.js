@@ -164,7 +164,7 @@ function zoomOnPosition (position) {
 function showInfoWindow(vehicleId, message)
 {
   var infoMessage = "<img src='./pn_small.png'> <b>Message delivered via PubNub</b> <br/><br/>"
-  infoMessage += moderate(message);
+  infoMessage += message;
   if (vehicles[vehicleId].infoWindow != null)
     vehicles[vehicleId].infoWindow.close();
 

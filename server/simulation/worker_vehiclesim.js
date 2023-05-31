@@ -7,7 +7,7 @@
 //  by this web worker will be hosted in the customer's server environment
 if ('function' === typeof importScripts) {
   const window = null
-  importScripts('https://cdn.pubnub.com/sdk/javascript/pubnub.7.2.1.min.js')
+  importScripts('https://cdn.pubnub.com/sdk/javascript/pubnub.7.2.2.min.js')
   importScripts('../../js/theme.js')
   importScripts('./names.js')
 
@@ -39,6 +39,14 @@ if ('function' === typeof importScripts) {
         uuid: id,
         listenToBrowserNetworkEvents: false //  Allows us to call the PubNub SDK from a web worker
       })
+      var accessManagerToken = await requestAccessManagerToken(id)
+      if (accessManagerToken == null)
+      {
+        console.log('Error retrieving access manager token')
+      }
+      else{
+        localPubNub.setToken(accessManagerToken)
+      }
 
       await localPubNub.addListener({
         status: async statusEvent => {
@@ -210,6 +218,27 @@ if ('function' === typeof importScripts) {
         })
       }
       tick++
+    }
+  }
+
+  async function requestAccessManagerToken (userId) {
+    try {
+      const TOKEN_SERVER = 'https://devrel-demos-access-manager.netlify.app/.netlify/functions/api/deliverydemo'
+      const response = await fetch(`${TOKEN_SERVER}/grant`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ UUID: userId })
+      })
+  
+      const token = (await response.json()).body.token
+      //console.log('created token: ' + token)
+  
+      return token
+    } catch (e) {
+      console.log('failed to create token ' + e)
+      return null
     }
   }
 }

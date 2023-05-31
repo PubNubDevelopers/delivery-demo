@@ -33,7 +33,7 @@ async function onload () {
         'Not running within Interactive demo.  When running app in multiple windows, be sure to load the second window before requesting vehicle'
       )
     }
-    pubnub = createPubNubObject(identifier)
+    pubnub = await createPubNubObject(identifier)
     //  Although the map will listen for ALL vehicles (so you can see other people using the demo), all summoned vehicles by the same user will share a channel
     //  Requires stream controller to be enabled
     channelName = 'vehicle.' + pubnub.getUUID()
@@ -56,6 +56,7 @@ async function onload () {
       //  Status events
       status: async statusEvent => {
         //  Channel subscription is now complete, pre-populate with simulators.
+        //console.log(statusEvent)
       },
       //  Messages are sent when a route is started or stopped.  Messages are also recevied from vehicles to say when to show or hide the info window.
       message: async payload => {
@@ -126,12 +127,6 @@ async function onload () {
     pubnub.subscribe({
       channels: ['vehicle.*']
     })
-
-    //  Only used for interative demo
-    if (window.matchMedia('(max-width: 767px)').matches) {
-      // The viewport is less than 768 pixels wide
-      actionCompleted({ action: 'View the Delivery on Mobile', debug: false }) //  Only used for interactive demo
-    }
 
     var helpModal = new bootstrap.Modal(
       document.getElementById('helpModal'),
