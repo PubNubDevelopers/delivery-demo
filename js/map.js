@@ -164,7 +164,7 @@ function zoomOnPosition (position) {
 function showInfoWindow(vehicleId, message)
 {
   var infoMessage = "<img src='./pn_small.png'> <b>Message delivered via PubNub</b> <br/><br/>"
-  infoMessage += message;
+  infoMessage += escapeHTML(message);
   if (vehicles[vehicleId].infoWindow != null)
     vehicles[vehicleId].infoWindow.close();
 
@@ -189,4 +189,14 @@ function hideInfoWindow(vehicleId)
 {
   if (vehicles[vehicleId].infoWindow != null)
     vehicles[vehicleId].infoWindow.close();
+}
+
+function escapeHTML (unsafe_str) {
+  return unsafe_str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\"/g, '&quot;')
+    .replace(/\'/g, '&#39;')
+    .replace(/\//g, '&#x2F;')
 }
