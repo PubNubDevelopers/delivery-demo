@@ -7,7 +7,7 @@
 //  by this web worker will be hosted in the customer's server environment
 if ('function' === typeof importScripts) {
   const window = null
-  importScripts('https://cdn.pubnub.com/sdk/javascript/pubnub.7.2.2.min.js')
+  importScripts('https://cdn.pubnub.com/sdk/javascript/pubnub.13.1.2.min.js')
   importScripts('../../js/theme.js')
   importScripts('./names.js')
 
@@ -36,7 +36,7 @@ if ('function' === typeof importScripts) {
       localPubNub = new PubNub({
         publishKey: pubKey,
         subscribeKey: subKey,
-        uuid: id,
+        userId: id,
         listenToBrowserNetworkEvents: false //  Allows us to call the PubNub SDK from a web worker
       })
       var accessManagerToken = await requestAccessManagerToken(id)

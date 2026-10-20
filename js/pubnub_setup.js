@@ -27,7 +27,7 @@ async function createPubNubObject (presetUUID) {
   var pubnub = new PubNub({
     publishKey: publish_key,
     subscribeKey: subscribe_key,
-    uuid: UUID
+    userId: UUID
   })
   var accessManagerToken = await requestAccessManagerToken(UUID);
   if (accessManagerToken == null)
