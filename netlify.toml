@@ -1,0 +1,8 @@
+# The build command (set in the Netlify UI) writes the PubNub keys and the
+# Google Maps browser key into js/keys.js. These keys are meant to be public:
+# they are loaded by the browser, and the Google key is HTTP-referrer
+# restricted. Netlify smart detection flags the "AIza..." key and fails the
+# build, so turn smart detection off for this site. Regular secrets scanning
+# still runs for any env vars marked as secret.
+[build.environment]
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
