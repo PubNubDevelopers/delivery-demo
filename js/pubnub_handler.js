@@ -36,7 +36,7 @@ async function onload () {
     pubnub = await createPubNubObject(identifier)
     //  Although the map will listen for ALL vehicles (so you can see other people using the demo), all summoned vehicles by the same user will share a channel
     //  Requires stream controller to be enabled
-    channelName = 'vehicle.' + pubnub.getUUID()
+    channelName = 'vehicle.' + pubnub.getUserId()
 
     //  Retrieve the past 100 messages on the channel (channel name here is based on URL query string, where specified).  There are 2 messages associated with each delivery, one to say the delivery has started and one to say the delivery has finished, so this will capture up to 100 in-flight deliveries, but in reality it will depend on whether some of those deliveries have finished in the mean-time and how many messages were sent to the vehicle driver.  Practically, you are going to capture all the deliveries the user has requested but increasing this number will not have a negative impact.
     try {
